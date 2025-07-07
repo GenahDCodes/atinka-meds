@@ -1,3 +1,5 @@
+
+// models/Sale.java
 package models;
 
 import java.util.Date;
