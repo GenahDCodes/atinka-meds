@@ -11,5 +11,16 @@ public class Supplier {
     private String id;
     private String location;
     private int deliveryTime; // in days
-    // Getters, setters, and constructors to be implemented
+
+    public String getName() { return name; }
+    public String getId() { return id; }
+    public String getLocation() { return location; }
+    public int getDeliveryTime() { return deliveryTime; }
+
+    // Setters
+    public void setName(String name) { this.name = name; }
+    public void setId(String id) { this.id = id; }
+    public void setLocation(String location) { this.location = location; }
+    public void setDeliveryTime(int deliveryTime) { this.deliveryTime = deliveryTime; }
+}
 } 

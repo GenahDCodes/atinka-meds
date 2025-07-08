@@ -1,5 +1,3 @@
-//utils/SearchUtils.java
-
 package utils;
 
 /**

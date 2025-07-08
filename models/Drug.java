@@ -15,5 +15,25 @@ public class Drug {
     private Date expirationDate;
     private double price;
     private int stockLevel;
-    // Getters, setters, and constructors to be implemented
+
+// Getters
+    public String getName() { return name; }
+    public String getCode() { return code; }
+    public List<Supplier> getSuppliers() { return suppliers; }
+    public Date getExpirationDate() { return expirationDate; }
+    public double getPrice() { return price; }
+    public int getStockLevel() { return stockLevel; }
+
+    // Setters
+    public void setName(String name) { this.name = name; }
+    public void setCode(String code) { this.code = code; }
+    public void setSuppliers(List<Supplier> suppliers) { this.suppliers = suppliers; }
+    public void setExpirationDate(Date expirationDate) { this.expirationDate = expirationDate; }
+    public void setPrice(double price) { this.price = price; }
+    public void setStockLevel(int stockLevel) { this.stockLevel = stockLevel; }
+
+    // Constructor
+    public Drug() {
+        this.suppliers = new ArrayList<>();
+    }
 } 
