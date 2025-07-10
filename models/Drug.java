@@ -1,6 +1,6 @@
 //models/Drug.java
 package models;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
@@ -15,6 +15,21 @@ public class Drug {
     private Date expirationDate;
     private double price;
     private int stockLevel;
+
+
+    public Drug() {
+        this.suppliers = new ArrayList<>();
+    }
+
+    // Constructor with required fields
+    public Drug(String name, String code) {
+        this.name = name;
+        this.code = code;
+        this.suppliers = new ArrayList<>();
+        this.expirationDate = null; // Default to null if not provided
+        this.price = 0.0; // Default price
+        this.stockLevel = 0; // Default stock level
+    }
 
 // Getters
     public String getName() { return name; }
@@ -32,8 +47,4 @@ public class Drug {
     public void setPrice(double price) { this.price = price; }
     public void setStockLevel(int stockLevel) { this.stockLevel = stockLevel; }
 
-    // Constructor
-    public Drug() {
-        this.suppliers = new ArrayList<>();
-    }
 } 
