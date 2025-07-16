@@ -1,5 +1,6 @@
 package main;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -46,12 +47,32 @@ public class DrugMenu {
                     System.out.print("Enter drug code (D-XXXX): ");
                     String code = scanner.nextLine();
                     System.out.print("Enter price: ");
-                    double price = Double.parseDouble(scanner.nextLine());
+                    double price;
+                    try {
+                        price = Double.parseDouble(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid price format. Drug not added.");
+                        break;
+                    }
                     System.out.print("Enter stock level: ");
-                    int stockLevel = Integer.parseInt(scanner.nextLine());
+                    int stockLevel;
+                    try {
+                        stockLevel = Integer.parseInt(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid stock level format. Drug not added.");
+                        break;
+                    }
                     System.out.print("Enter expiration date (yyyy-MM-dd, or leave blank): ");
                     String dateStr = scanner.nextLine();
-                    Date expDate = dateStr.isEmpty() ? null : sdf.parse(dateStr);
+                    Date expDate = null;
+                    if (!dateStr.isEmpty()) {
+                        try {
+                            expDate = sdf.parse(dateStr);
+                        } catch (ParseException e) {
+                            System.out.println("Invalid date format. Please use yyyy-MM-dd. Drug not added.");
+                            break;
+                        }
+                    }
 
                     Drug newDrug = new Drug(name, code);
                     newDrug.setPrice(price);
@@ -86,15 +107,33 @@ public class DrugMenu {
 
                     System.out.print("Enter new price (or press Enter to keep " + existingDrug.getPrice() + "): ");
                     String priceStr = scanner.nextLine();
-                    if (!priceStr.isEmpty()) existingDrug.setPrice(Double.parseDouble(priceStr));
+                    if (!priceStr.isEmpty()) {
+                        try {
+                            existingDrug.setPrice(Double.parseDouble(priceStr));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid price format. Price not updated.");
+                        }
+                    }
 
                     System.out.print("Enter new stock level (or press Enter to keep " + existingDrug.getStockLevel() + "): ");
                     String stockStr = scanner.nextLine();
-                    if (!stockStr.isEmpty()) existingDrug.setStockLevel(Integer.parseInt(stockStr));
+                    if (!stockStr.isEmpty()) {
+                        try {
+                            existingDrug.setStockLevel(Integer.parseInt(stockStr));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid stock level format. Stock level not updated.");
+                        }
+                    }
 
                     System.out.print("Enter new expiration date (yyyy-MM-dd, or press Enter to keep): ");
                     String newDateStr = scanner.nextLine();
-                    if (!newDateStr.isEmpty()) existingDrug.setExpirationDate(sdf.parse(newDateStr));
+                    if (!newDateStr.isEmpty()) {
+                        try {
+                            existingDrug.setExpirationDate(sdf.parse(newDateStr));
+                        } catch (ParseException e) {
+                            System.out.println("Invalid date format. Please use yyyy-MM-dd. Expiration date not updated.");
+                        }
+                    }
 
                     if (drugService.updateDrug(existingDrug)) {
                         System.out.println("Drug updated.");
@@ -141,19 +180,37 @@ public class DrugMenu {
 
                 case "10":
                     System.out.print("Enter stock threshold: ");
-                    int threshold = Integer.parseInt(scanner.nextLine());
+                    int threshold;
+                    try {
+                        threshold = Integer.parseInt(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid threshold format. Please enter a number.");
+                        break;
+                    }
                     drugService.checkLowStockAlerts(threshold);
                     break;
 
                 case "11":
                     System.out.print("Enter stock threshold for reordering: ");
-                    int reorderThreshold = Integer.parseInt(scanner.nextLine());
+                    int reorderThreshold;
+                    try {
+                        reorderThreshold = Integer.parseInt(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid threshold format. Please enter a number.");
+                        break;
+                    }
                     drugService.suggestAutoReorders(reorderThreshold);
                     break;
 
                 case "12":
                     System.out.print("Enter expiry days threshold: ");
-                    int expiryDays = Integer.parseInt(scanner.nextLine());
+                    int expiryDays;
+                    try {
+                        expiryDays = Integer.parseInt(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid threshold format. Please enter a number.");
+                        break;
+                    }
                     drugService.generateInventoryReport(expiryDays);
                     break;
 

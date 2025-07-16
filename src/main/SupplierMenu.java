@@ -1,4 +1,3 @@
-//src/main/SupplierMenu.java
 package main;
 
 import java.time.LocalDate;
@@ -8,6 +7,7 @@ import models.Transaction;
 import services.CustomerService;
 import services.FileService;
 import services.SupplierService;
+import java.util.List;
 
 public class SupplierMenu {
     public static void main(String[] args) {
@@ -15,7 +15,6 @@ public class SupplierMenu {
         FileService fileService = new FileService();
         SupplierService supplierService = new SupplierService(fileService);
         CustomerService customerService = new CustomerService(fileService);
-
 
         boolean exit = false;
 
@@ -102,7 +101,7 @@ public class SupplierMenu {
                 case "10":
                     System.out.print("Enter supplier ID: ");
                     String suppId = scanner.nextLine();
-                    var supplierTxns = customerService.getSupplierTransactions(suppId);
+                    List<Transaction> supplierTxns = customerService.getSupplierTransactions(suppId);
                     if (supplierTxns.isEmpty()) {
                         System.out.println("No transactions found.");
                     } else {

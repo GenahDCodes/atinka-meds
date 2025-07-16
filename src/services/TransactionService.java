@@ -38,13 +38,15 @@ public class TransactionService {
     }
 
     public List<Sale> getRecentSales() {
-        return new Stack<Sale>().addAll(salesLog);
+        Stack<Sale> result = new Stack<>();
+        result.addAll(salesLog);
+        return result;
     }
 
     public List<Transaction> getRecentPurchases(String drugCode, int limit) {
         return purchaseHistory.stream()
                 .filter(t -> t.getDrugCode().equals(drugCode))
-                .sorted((t1, t2) -> t2.getDate().compareTo(t1.getDate())) // Sort by date descending
+                .sorted((t1, t2) -> t2.getDate().compareTo(t1.getDate()))
                 .limit(limit)
                 .collect(Collectors.toList());
     }

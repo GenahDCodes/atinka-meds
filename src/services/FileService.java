@@ -1,4 +1,3 @@
-//services/FileService.java
 package services;
 
 import java.io.*;
@@ -44,7 +43,7 @@ public class FileService {
     }
 
     // === Generic writeObject ===
-    private void writeObject(Object data, String filename) {
+    public void writeObject(Object data, String filename) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
             out.writeObject(data);
         } catch (IOException e) {
@@ -53,7 +52,7 @@ public class FileService {
     }
 
     // === Generic readObject ===
-    private Object readObject(String filename) {
+    public Object readObject(String filename) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             return in.readObject();
         } catch (FileNotFoundException e) {

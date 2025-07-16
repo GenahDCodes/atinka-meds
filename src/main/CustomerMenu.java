@@ -1,4 +1,3 @@
-//src/main/CustomerMenu.java
 package main;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -6,6 +5,7 @@ import models.Customer;
 import models.Transaction;
 import services.CustomerService;
 import services.FileService;
+import java.util.List;
 
 public class CustomerMenu {
     public static void main(String[] args) {
@@ -84,7 +84,7 @@ public class CustomerMenu {
                 case "8":
                     System.out.print("Enter customer ID to view transactions: ");
                     String custId = scanner.nextLine();
-                    var txns = customerService.getCustomerTransactions(custId);
+                    List<Transaction> txns = customerService.getCustomerTransactions(custId);
                     if (txns.isEmpty()) {
                         System.out.println("No transactions found.");
                     } else {

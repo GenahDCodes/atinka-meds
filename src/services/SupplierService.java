@@ -1,4 +1,3 @@
-//src/main/SupplierService.java
 package services;
 
 import java.util.ArrayList;
@@ -40,6 +39,10 @@ public class SupplierService {
         return SupplierSearchUtils.binarySearchById(suppliers, id);
     }
 
+    public Supplier getSupplierById(String id) {
+        return searchSupplierById(id); // Reuse existing search method
+    }
+
     public Supplier searchSupplierByName(String name) {
         return SupplierSearchUtils.linearSearchByName(suppliers, name);
     }
@@ -53,7 +56,7 @@ public class SupplierService {
     }
 
     public void sortSuppliersById() {
-        suppliers.sort((s1, s2) -> s1.getId().compareToIgnoreCase(s2.getId())); // temporary, or implement your own sort
+        suppliers.sort((s1, s2) -> s1.getId().compareToIgnoreCase(s2.getId()));
     }
 
     public void printSuppliers() {

@@ -1,8 +1,8 @@
-// File: utils/SearchUtils.java
 package utils;
 
 import models.Drug;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SearchUtils {
 
@@ -47,6 +47,6 @@ public class SearchUtils {
         return drugs.stream()
             .filter(d -> d.getSuppliers().stream()
                 .anyMatch(s -> s.getId().equalsIgnoreCase(supplierId)))
-            .toList();
+            .collect(Collectors.toList());
     }
 }

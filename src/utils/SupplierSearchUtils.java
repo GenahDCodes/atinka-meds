@@ -1,8 +1,8 @@
-// File: src/utils/SupplierSearchUtils.java
 package utils;
 
 import models.Supplier;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SupplierSearchUtils {
 
@@ -38,14 +38,13 @@ public class SupplierSearchUtils {
     public static List<Supplier> filterByLocation(List<Supplier> suppliers, String location) {
         return suppliers.stream()
             .filter(s -> s.getLocation().equalsIgnoreCase(location))
-            .toList();
+            .collect(Collectors.toList());
     }
 
     // Filter suppliers by max delivery time
     public static List<Supplier> filterByDeliveryTime(List<Supplier> suppliers, int maxDays) {
         return suppliers.stream()
             .filter(s -> s.getDeliveryTime() <= maxDays)
-            .toList();
+            .collect(Collectors.toList());
     }
 }
-
