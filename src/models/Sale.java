@@ -1,3 +1,5 @@
+//models/sale.java
+
 package models;
 
 import java.io.Serializable;
