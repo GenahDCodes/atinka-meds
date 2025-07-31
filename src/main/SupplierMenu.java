@@ -1,3 +1,4 @@
+// main/SupplierMenu.java
 package main;
 
 import java.time.LocalDate;
@@ -31,20 +32,41 @@ public class SupplierMenu {
             System.out.println("9. Display All Suppliers");
             System.out.println("10. View Supplier Transactions");
             System.out.println("11. Log New Transaction for Supplier");
-            System.out.println("0. Exit");
+            System.out.println("0. Go back to Main Menu"); 
             System.out.print("Choose an option: ");
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1":
-                    System.out.print("Enter name: ");
-                    String name = scanner.nextLine();
+                    String name;
+                    while (true) {
+                        System.out.print("Enter name: ");
+                        name = scanner.nextLine();
+                        if (name.matches("^[a-zA-Z\\s]+$")) { 
+                            break;
+                        } else {
+                            System.out.println("Invalid name format. Name should only contain letters and spaces. Please re-enter.");
+                        }
+                    }
                     System.out.print("Enter ID: ");
                     String id = scanner.nextLine();
                     System.out.print("Enter location: ");
                     String location = scanner.nextLine();
-                    System.out.print("Enter delivery time (in days): ");
-                    int deliveryTime = Integer.parseInt(scanner.nextLine());
+                    
+                    int deliveryTime;
+                    while (true) {
+                        System.out.print("Enter delivery time (in days): ");
+                        try {
+                            deliveryTime = Integer.parseInt(scanner.nextLine());
+                            if (deliveryTime <= 0) {
+                                System.out.println("Delivery time must be positive. Please re-enter.");
+                            } else {
+                                break;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid delivery time format. Please enter a number. Please re-enter.");
+                        }
+                    }
 
                     Supplier newSupplier = new Supplier(name, id, location, deliveryTime);
                     supplierService.addSupplier(newSupplier);
@@ -64,34 +86,58 @@ public class SupplierMenu {
                     Supplier foundById = supplierService.searchSupplierById(searchId);
                     System.out.println(foundById != null ? foundById : "Supplier not found.");
                     break;
-
                 case "4":
                     System.out.print("Enter supplier name to search: ");
                     String searchName = scanner.nextLine();
                     Supplier foundByName = supplierService.searchSupplierByName(searchName);
                     System.out.println(foundByName != null ? foundByName : "Supplier not found.");
                     break;
-
                 case "5":
                     supplierService.sortSuppliersByName();
-                    System.out.println("Suppliers sorted by name.");
+                    System.out.println("Suppliers sorted by name:"); 
+                    supplierService.printSuppliers(); 
                     break;
 
                 case "6":
                     supplierService.sortSuppliersByDeliveryTime();
-                    System.out.println("Suppliers sorted by delivery time.");
+                    System.out.println("Suppliers sorted by delivery time:"); 
+                    supplierService.printSuppliers(); 
                     break;
 
                 case "7":
                     System.out.print("Enter location to filter: ");
                     String filterLocation = scanner.nextLine();
-                    supplierService.filterByLocation(filterLocation).forEach(System.out::println);
+                    List<Supplier> filteredSuppliers = supplierService.filterByLocation(filterLocation);
+                    if (filteredSuppliers.isEmpty()) {
+                        System.out.println("No suppliers found for location: " + filterLocation);
+                    } else {
+                        System.out.println("Suppliers filtered by location '" + filterLocation + "':");
+                        filteredSuppliers.forEach(System.out::println);
+                    }
                     break;
 
                 case "8":
-                    System.out.print("Enter max delivery time: ");
-                    int maxTime = Integer.parseInt(scanner.nextLine());
-                    supplierService.filterByDeliveryTime(maxTime).forEach(System.out::println);
+                    int maxTime;
+                    while (true) {
+                        System.out.print("Enter max delivery time: ");
+                        try {
+                            maxTime = Integer.parseInt(scanner.nextLine());
+                            if (maxTime <= 0) {
+                                System.out.println("Max delivery time must be positive. Please re-enter.");
+                            } else {
+                                break;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid delivery time format. Please enter a number. Please re-enter.");
+                        }
+                    }
+                    List<Supplier> suppliersByDeliveryTime = supplierService.filterByDeliveryTime(maxTime);
+                    if (suppliersByDeliveryTime.isEmpty()) {
+                        System.out.println("No suppliers found with delivery time less than or equal to " + maxTime + " days.");
+                    } else {
+                        System.out.println("Suppliers with delivery time less than or equal to " + maxTime + " days:");
+                        suppliersByDeliveryTime.forEach(System.out::println);
+                    }
                     break;
 
                 case "9":
@@ -103,12 +149,12 @@ public class SupplierMenu {
                     String suppId = scanner.nextLine();
                     List<Transaction> supplierTxns = customerService.getSupplierTransactions(suppId);
                     if (supplierTxns.isEmpty()) {
-                        System.out.println("No transactions found.");
+                        System.out.println("No transactions found for supplier ID: " + suppId);
                     } else {
+                        System.out.println("Transactions for Supplier ID " + suppId + ":");
                         supplierTxns.forEach(System.out::println);
                     }
                     break;
-
                 case "11":
                     System.out.print("Enter customer ID: ");
                     String customerId = scanner.nextLine();
@@ -116,8 +162,21 @@ public class SupplierMenu {
                     String supplierId = scanner.nextLine();
                     System.out.print("Enter drug code: ");
                     String drugCode = scanner.nextLine();
-                    System.out.print("Enter quantity: ");
-                    int qty = Integer.parseInt(scanner.nextLine());
+                    
+                    int qty;
+                    while (true) {
+                        System.out.print("Enter quantity: ");
+                        try {
+                            qty = Integer.parseInt(scanner.nextLine());
+                            if (qty <= 0) {
+                                System.out.println("Quantity must be positive. Please re-enter.");
+                            } else {
+                                break;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid quantity format. Please enter a number. Please re-enter.");
+                        }
+                    }
 
                     Transaction newTxn = new Transaction(customerId, supplierId, drugCode, qty, LocalDate.now());
                     customerService.addTransaction(newTxn);
@@ -126,7 +185,7 @@ public class SupplierMenu {
 
                 case "0":
                     exit = true;
-                    System.out.println("Exiting Supplier Management...");
+                    System.out.println("Returning to Main Menu..."); 
                     break;
 
                 default:

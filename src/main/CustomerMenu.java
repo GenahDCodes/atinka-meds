@@ -1,4 +1,6 @@
+//main/CustomerMenu.java
 package main;
+
 import java.time.LocalDate;
 import java.util.Scanner;
 import models.Customer;
@@ -26,14 +28,22 @@ public class CustomerMenu {
             System.out.println("7. Display All Customers");
             System.out.println("8. View Customer Transactions");
             System.out.println("9. Log New Transaction");
-            System.out.println("0. Exit");
+            System.out.println("0. Go back to Main Menu"); // Changed from "0. Exit"
             System.out.print("Choose an option: ");
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1":
-                    System.out.print("Enter name: ");
-                    String name = scanner.nextLine();
+                    String name;
+                    while (true) {
+                        System.out.print("Enter name: ");
+                        name = scanner.nextLine();
+                        if (name.matches("^[a-zA-Z\\s]+$")) { // Allows only letters and spaces
+                            break;
+                        } else {
+                            System.out.println("Invalid name format. Name should only contain letters and spaces. Please re-enter.");
+                        }
+                    }
                     System.out.print("Enter ID: ");
                     String id = scanner.nextLine();
                     System.out.print("Enter contact info: ");
@@ -45,7 +55,6 @@ public class CustomerMenu {
                     customerService.addCustomer(newCustomer);
                     System.out.println("Customer added.");
                     break;
-
                 case "2":
                     System.out.print("Enter customer ID to remove: ");
                     String removeId = scanner.nextLine();
@@ -59,22 +68,22 @@ public class CustomerMenu {
                     Customer foundById = customerService.searchCustomerById(searchId);
                     System.out.println(foundById != null ? foundById : "Customer not found.");
                     break;
-
                 case "4":
                     System.out.print("Enter customer name to search: ");
                     String searchName = scanner.nextLine();
                     Customer foundByName = customerService.searchCustomerByName(searchName);
                     System.out.println(foundByName != null ? foundByName : "Customer not found.");
                     break;
-
                 case "5":
                     customerService.sortCustomersByName();
-                    System.out.println("Customers sorted by name.");
+                    System.out.println("Customers sorted by name:"); // Added message
+                    customerService.printCustomers(); // Display sorted list
                     break;
 
                 case "6":
                     customerService.sortCustomersById();
-                    System.out.println("Customers sorted by ID.");
+                    System.out.println("Customers sorted by ID:"); // Added message
+                    customerService.printCustomers(); // Display sorted list
                     break;
 
                 case "7":
@@ -88,10 +97,10 @@ public class CustomerMenu {
                     if (txns.isEmpty()) {
                         System.out.println("No transactions found.");
                     } else {
+                        System.out.println("Transactions for Customer ID " + custId + ":"); // Added header
                         txns.forEach(System.out::println);
                     }
                     break;
-
                 case "9":
                     System.out.print("Enter customer ID: ");
                     String customerId = scanner.nextLine();
@@ -99,8 +108,21 @@ public class CustomerMenu {
                     String supplierId = scanner.nextLine();
                     System.out.print("Enter drug code: ");
                     String drugCode = scanner.nextLine();
-                    System.out.print("Enter quantity: ");
-                    int qty = Integer.parseInt(scanner.nextLine());
+                    
+                    int qty;
+                    while (true) {
+                        System.out.print("Enter quantity: ");
+                        try {
+                            qty = Integer.parseInt(scanner.nextLine());
+                            if (qty <= 0) {
+                                System.out.println("Quantity must be positive. Please re-enter.");
+                            } else {
+                                break;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid quantity format. Please enter a number. Please re-enter.");
+                        }
+                    }
 
                     Transaction txn = new Transaction(
                             customerId,
@@ -109,14 +131,13 @@ public class CustomerMenu {
                             qty,
                             LocalDate.now()
                     );
-
                     customerService.addTransaction(txn);
                     System.out.println("Transaction logged.");
                     break;
 
                 case "0":
                     exit = true;
-                    System.out.println("Exiting Customer Management...");
+                    System.out.println("Returning to Main Menu..."); // Changed message
                     break;
 
                 default:
